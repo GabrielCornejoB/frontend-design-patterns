@@ -10,5 +10,5 @@ design pattern example.
 You can find more information about this design
 pattern, [here](https://refactoring.guru/design-patterns/chain-of-responsibility).
 
-[Files Upload example](./chain-of-responsibility/README.md)
+[Files Upload example](./chain-of-responsibility)
 
