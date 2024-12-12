@@ -1,4 +1,4 @@
-# Chain Of Responsibility Files Upload Use Case 🔗
+# Files Upload example
 
 File uploading usually requires quite a bit of steps before sending them in requests or whatever your
 application needs. You have to validate: size, name, type, etc... Because the HTML way is really flexible,
