@@ -12,3 +12,9 @@ pattern, [here](https://refactoring.guru/design-patterns/chain-of-responsibility
 
 [Files Upload example](./chain-of-responsibility)
 
+## Command 🖥️
+
+You can find more information about this design
+pattern, [here](https://refactoring.guru/design-patterns/command).
+
+[Store Actions](./command)
