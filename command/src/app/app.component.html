@@ -28,6 +28,7 @@
         <button
           class="btn btn-warning"
           [disabled]="state.isLoading || !state.posts"
+          (click)="store.createAction.execute(undefined)"
         >
           Create
         </button>
