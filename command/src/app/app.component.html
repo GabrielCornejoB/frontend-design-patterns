@@ -38,6 +38,7 @@
         <button
           class="btn btn-error"
           [disabled]="state.isLoading || !state.posts"
+          (click)="store.deleteAction.execute(undefined)"
         >
           Delete
         </button>

@@ -6,6 +6,7 @@ import { GetPostsCommand } from '../commands/get-posts.command';
 import { PostsCommand } from '../commands/posts.command';
 import { GetOnePostCommand } from '../commands/get-one-post.command';
 import { CreatePostCommand } from '../commands/create-post.command';
+import { DeletePostCommand } from '../commands/delete-post.command';
 
 @Injectable()
 export class PostsStoreService extends ComponentStore<PostsState> {
@@ -14,6 +15,7 @@ export class PostsStoreService extends ComponentStore<PostsState> {
   getAllAction: PostsCommand;
   getOneAction: PostsCommand;
   createAction: PostsCommand;
+  deleteAction: PostsCommand;
 
   constructor(private readonly http: PostsHttpService) {
     super({
@@ -24,5 +26,6 @@ export class PostsStoreService extends ComponentStore<PostsState> {
     this.getAllAction = new GetPostsCommand(this, this.http);
     this.getOneAction = new GetOnePostCommand(this, this.http);
     this.createAction = new CreatePostCommand(this, this.http);
+    this.deleteAction = new DeletePostCommand(this, this.http);
   }
 }
