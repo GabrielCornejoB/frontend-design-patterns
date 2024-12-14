@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, JsonPipe, NgClass } from '@angular/common';
 
 import { RouterOutlet } from '@angular/router';
 import { PostsStoreService } from './posts-store/posts-store.service';
@@ -7,7 +7,7 @@ import { PostsStoreService } from './posts-store/posts-store.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, AsyncPipe, NgClass],
+  imports: [RouterOutlet, AsyncPipe, NgClass, JsonPipe],
   providers: [PostsStoreService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
