@@ -1,27 +1,73 @@
-# Command
+# Store Actions example
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.12.
+Managing state in our applications sometimes can get quite messy, more in Angular in which we use RxJs which
+can lead to very large chains of observables 🔗. So in scenarios where we have a few actions we may want to
+separate responsibilities. And this pattern is great for that. For this example I have a very simple app
+that uses the [JSON Placeholder API](https://jsonplaceholder.typicode.com/) and here we fetch, find, create &
+delete posts 👨‍💻.
 
-## Development server
+These seem like really simple actions, but in real world scenarios we just don't need to fetch the data, we
+also may need to manage loading, logs, execute side effects, catch errors, etc... 🫠 So maybe at the beginning
+it could be manageable but in the long run we will end with huge classes that would be very hard to extend,
+refactor or fix in the future.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Structure
 
-## Code scaffolding
+As this is an angular application here we are using services and dependency injection, but realistically it
+can be used without injecting stuff, it's just the ✨angular way✨. The important files to check out are the
+following:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- `app.component`: Main component, has a reference of the **Invoker** which in our case is the `posts-store.service.`
+- `posts-http.service`: Service which makes the HTTP calls to the API
+- `posts-store.service`: Store service which contains the state & functions to modify it. Is the **Invoker**,
+  and contains an instance of all the commands needed.
+- `commands/`: Folder in which all the **commands** are. In this case our **commands** are actions.
+- `posts.command`: Abstract class which contains the structure that all the posts commands should follow, also has
+  some shared logic.
 
-## Build
+## Pros & Cons
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Pros
 
-## Running unit tests
+- Follows the **Single Responsibility** principle 1️⃣.
+- Allows the **Separation of Concerns** ➗.
+- Avoids having tons of files (in patterns like the one used in `@ngrx/store`) or having huge classes 🙃.
+- Allows sharing common functions between commands 🃏.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Cons
 
-## Running end-to-end tests
+- If used incorrectly we could end up with a ton of repeated code .
+- It may complicate some things if we define very strict abstract classes (example: the payload argument in the execute function).
+- This pattern may be or not be flexible. Read the next section.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## The Pattern's flexibility
 
-## Further help
+In the theory we need to define the commands as the **base class**, inside our invoker. But these removes a ton
+of flexibility. We could just define the type as the class itself, and then we could abstract even more logic inside each command.
+But this could also lead us to adding non-related logic in these classes, defeating the whole purpose of the pattern.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Example:** If I have a confirmation pop-up before deleting something, I could add the logic to open the pop-up inside
+the command, also the logic to close it and lastly the logic to **execute** the action. I could add these open(), close()
+base functions to the base class but not all actions may need to open/close a pop-up. So it's kinda confusing.
+
+Also, the `execute()` function in some cases may need an argument/payload. Like in a form for creating a resource, but in other cases
+we may not need any payload at all, like when we want to fetch all the resources. So here we could use a type like the `unknown` in our
+base class, but that would mean that when we want to call the execute command we will not have any type-checking.
+
+A work-around this is to define the base command class with generics for these arguments, return types or anything we need in all of
+our commands. But idk dear reader, this could also end up with a lot of generics which would look terrible 🤢.
+
+Still, it's one of my favorite design patterns, but to use it we have to "flexibilize" 🤣 it a lot, which isn't bad, patterns
+are not written in stone, we have to use them in our convenience. I also haven't found a scenario in which defining the commands as the base
+class in the invoker could benefit in any way. Maybe if we want to interchange them based on a condition or something (that would actually
+be so cool), so for the time being I am just using the base command class to follow a naming convention between my commands' functions 🤷‍♂️.
+
+## Run the project locally
+
+The project is functional (well not really a project, more like an example), you first have to install the
+dependencies with `npm install`, install angular (recommended, but I think that it is not necessary), and lastly
+run the project with either `npm run start` or `ng serve`;
+
+Any feedback will be gladly received 😁, just consider that this example application may contain some bugs and
+not all conditions may be handled. And this is because its purpose is not to be a whole application, just an
+example of the use of this design pattern.
